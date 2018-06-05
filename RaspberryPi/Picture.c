@@ -15,7 +15,7 @@ int main(void)
   wiringPiSetup();
   wiringPiSPISetup(0, 1000000);
 
-  void laufen(int color)
+  void paint(int color)
   {
     int shift;
     int col;
@@ -34,9 +34,9 @@ int main(void)
           for (shift = 0; shift < 8; shift++)
           {
 
-            data[0] = color == 0 ? ~picture[shift] : 0xFF;
-            data[1] = color == 1 ? ~picture[shift] : 0xFF;
-            data[2] = color == 2 ? ~picture[shift] : 0xFF;
+            data[RED_DATA] = color == 0 ? ~picture[shift] : 0xFF;
+            data[BLUE_DATA] = color == 1 ? ~picture[shift] : 0xFF;
+            data[GREEN_DATA] = color == 2 ? ~picture[shift] : 0xFF;
 
             data[3] = 0x01 << shift;
             wiringPiSPIDataRW(0, data, sizeof(data));
@@ -54,8 +54,8 @@ int main(void)
     for (j = 0; j < 8; j++)
     {
       data[RED_DATA] = 0xFF;
-      data[2] = 0xFF;
-      data[1] = 0xFF;
+      data[BLUE_DATA] = 0xFF;
+      data[GREEN_DATA] = 0xFF;
       data[3] = 0x01 << j;
       wiringPiSPIDataRW(0, data, sizeof(data));
       delay(x);
@@ -67,7 +67,7 @@ int main(void)
     int colorselect = 0;
     for (colorselect = 0; colorselect < 3; colorselect++)
     {
-      laufen(colorselect);
+      paint(colorselect);
       matrixoff();
       delay(1000);
     };
