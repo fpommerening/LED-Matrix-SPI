@@ -29,11 +29,56 @@
         <div class="slides">
             <section>
                 <h1>LED-Matrix mit SPI
-                <h3>Frank Pommerening (M010)</h3>
-                <h3>Modul: Programmierung 1 Vertiefung</h3>
+                    <h3>Frank Pommerening (M010)</h3>
+                    <h3>Modul: Programmierung 1 Vertiefung</h3>
             </section>
-
-          
+            <section>
+                <h2>Anschluss</h2>
+                <img src="images/matrix1.png" style="float:left" />
+                <img src="images/matrix2.png" style="float:right" />
+                <ul>
+                    <li>VCC (5 Volt)</li>
+                    <li>GND (Masse)</li>
+                    <li>Clock</li>
+                    <li>MOSI</li>
+                    <li>Chip Enabled</li>
+                </ul>
+                <br />
+                <br />
+                <p style="font-size: 10px">
+                    Quelle:
+                    <br/> https://www.wiki.52pi.com/images/thumb/9/90/Matrix1.jpg/500px-Matrix1.jpg
+                    <br/> https://www.wiki.52pi.com/images/thumb/9/90/Matrix1.jpg/500px-Matrix2.jpg
+                </p>
+            </section>
+            <section>
+                <section>
+                    <h2>Funktion Schieberegister</h2>
+                </section>
+                <section>
+                    <h3>Beispiel Lauflicht</h3>
+                    <a href="https://github.com/fpommerening/LED-Matrix-SPI/blob/master/RaspberryPi/Picture.c" target="_blank">GitHub (Raspi)</a>
+                    
+                    
+                </section>
+            </section>
+            <section>
+                <section>
+                    <h2>Additive Farbmischung</h2>
+                    <font style="color: red">ROT</font> + <font style="color: green">GRÜN</font> = <font style="color: yellow">GELB</font><br />
+                    <font style="color: green">GRÜN</font> + <font style="color: blue">BLAU</font>  = <font style="color:cyan">CYAN</font><br />
+                    <font style="color: red">ROT</font> + <font style="color: blue">BLAU</font> = <font style="color:magenta">MAGENTA</font><br />
+                    <font style="color: red">ROT</font> + <font style="color: green">GRÜN</font>+ <font style="color: blue">BLAU</font> = <font style="color:white">WEIß</font><br />
+                    <br />
+                    <br />
+                    Die Mischung der erfolgt über ein zeitliches Multiplexing.
+                </section>
+                <section>
+                    <h3>Beispiele</h3>
+                    rot-nach-weiß: <a href="https://github.com/fpommerening/LED-Matrix-SPI/blob/master/RaspberryPi/Color.c" target="_blank">GitHub (Raspi)</a><br />
+                    Zufall: <a href="https://github.com/fpommerening/LED-Matrix-SPI/blob/master/RaspberryPi/ColorRandom.c" target="_blank">GitHub (Raspi)</a>
+                </section>
+            </section>
             <section>
                 <h2>Vielen Dank für die Aufmerksamkeit</h2>
             </section>
