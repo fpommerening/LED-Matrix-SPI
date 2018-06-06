@@ -30,7 +30,7 @@
             <section>
                 <h1>LED-Matrix mit SPI
                     <h3>Frank Pommerening (M010)</h3>
-                    <h3>Modul: Programmierung 1 Vertiefung</h3>
+                    <h3>Modul: Vertiefung Programmierung 1</h3>
             </section>
             <section>
                 <h2>Anschluss</h2>
@@ -40,20 +40,68 @@
                     <li>VCC (5 Volt)</li>
                     <li>GND (Masse)</li>
                     <li>Clock</li>
-                    <li>MOSI</li>
+                    <li>MOSI (Master Out, Slave In)</li>
                     <li>Chip Enabled</li>
                 </ul>
                 <br />
                 <br />
                 <p style="font-size: 10px">
                     Quelle:
-                    <br/> https://www.wiki.52pi.com/images/thumb/9/90/Matrix1.jpg/500px-Matrix1.jpg
-                    <br/> https://www.wiki.52pi.com/images/thumb/9/90/Matrix1.jpg/500px-Matrix2.jpg
+                    <br/> https://www.wiki.52pi.com/images/9/90/Matrix1.jpg
+                    <br/> https://www.wiki.52pi.com/images/a/a8/Matrix2.jpg
                 </p>
             </section>
             <section>
                 <section>
-                    <h2>Funktion Schieberegister</h2>
+                    <h2>Schieberegister</h2>
+                    <ul>
+                        <li>Viele Ausgänge aus wenigen Eingängen erzeugen</li>
+                        <li>Ansteuerung seriell</li>
+                        <li>Werte werden zwischgespeichert</li>
+                        <li>Aktivierung übernimmt Werte auf die Ausgänge</li>
+                    </ul>
+                    <h3 class="fragment">Funktion</h3>
+                    <ol class="fragment">
+                        <li>Chip Enabled LOW</li>
+                        <li>Werte schreiben (je Farbe 8 Bit)</li>
+                        <li>Zielregister wählen (8 Bit)</li>
+                        <li>Chip Enabled HIGH</li>
+                        <li>Wartezeit für LED (2 ms)</li>
+                    </ol>
+                </section>
+                <section>
+                    <h3>Arduino / ESP 8266</h3>
+                        <pre><code class="cpp">static uint8_t data[4] = {0x0, 0x0, 0x0, 0x0};
+int shift;   int displaywait = 2;
+uint8_t pic[8] = {0xFF, 0x42, 0x24, 0x18, 0x18, 0x24, 0x42, 0xFF};
+for (shift = 0; shift < 8; shift++)
+{
+    data[0] = ~pic[j];
+    data[2] = 0xFF;
+    data[1] = 0xFF;
+    data[3] = 0x01 << shift ;
+    digitalWrite(CE, LOW);
+    SPI.transfer(data[0]);    SPI.transfer(data[1]);
+    SPI.transfer(data[2]);    SPI.transfer(data[3]);
+    digitalWrite(CE, HIGH);
+    delay(displaywait);
+}</code></pre>
+                </section>
+                <section>
+                    <h3>Raspberry Pi 3</h3>
+                    <pre><code class="cpp">static uint8_t data[4] = {0x0, 0x0, 0x0, 0x0};
+int shift;
+int displaywait = 2;
+uint8_t pic[8] = {0xFF, 0x42, 0x24, 0x18, 0x18, 0x24, 0x42, 0xFF};
+for (shift = 0; shift < 8; shift++)
+{
+    data[0] = ~pic[j];
+    data[2] = 0xFF;
+    data[1] = 0xFF;
+    data[3] = 0x01 << shift ;
+    wiringPiSPIDataRW(0, data, sizeof(data));
+    delay(displaywait);
+}</code></pre>
                 </section>
                 <section>
                     <h3>Beispiel Lauflicht</h3>
@@ -70,8 +118,13 @@
                     <font style="color: red">ROT</font> + <font style="color: blue">BLAU</font> = <font style="color:magenta">MAGENTA</font><br />
                     <font style="color: red">ROT</font> + <font style="color: green">GRÜN</font>+ <font style="color: blue">BLAU</font> = <font style="color:white">WEIß</font><br />
                     <br />
-                    <br />
-                    Die Mischung der erfolgt über ein zeitliches Multiplexing.
+                    <p class="fragment">
+                        Wichtig: Mehr als eine LED je Feld kann nicht aktiviert werden!
+                    </p>
+                    <p class="fragment">
+                    Die Mischung erfolgt über ein zeitliches Multiplexing.
+                    </p>
+                    
                 </section>
                 <section>
                     <h3>Beispiele</h3>
